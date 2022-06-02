@@ -108,6 +108,8 @@ First call return the JSON and second and other call return a status.
 > This endpoint's only purpose is to fake the callback option we give to the real payment service
 
 ## 
-docker build -t redis-server:v1 .
-docker images
-docker run  -d -v ~/docker/redis:/redis-service/logs -p 8080:8080 redis-server:v1
+
+## API Sequence Diagram
+> This diagram covers all 3 possibility this API gives for the retry pattern.
+> 
+![](doc/PaymentServiceRetryPattern.png)
