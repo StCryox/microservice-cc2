@@ -6,6 +6,13 @@
 > _Pair programming_
 
 ## Usage
+## To start using the API
+Run the following commands in the "spring-server" folder :
+- Start redis server using docker :
+``` bash 
+docker-compose -f docker-compose-redis-only.yml up
+- ```
+- Then start the project
 ### Exemple
 - Endpoints : http://localhost:8080/v1/payments/
 - Header => idempotency-key : your-key-here
@@ -107,9 +114,7 @@ First call return the JSON and second and other call return a status.
 
 > This endpoint's only purpose is to fake the callback option we give to the real payment service
 
-## 
-
 ## API Sequence Diagram
 > This diagram covers all 3 possibility this API gives for the retry pattern.
-> 
+
 ![](doc/PaymentServiceRetryPattern.png)
