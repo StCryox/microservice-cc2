@@ -24,7 +24,7 @@ public class MakePaymentService {
     private RedisRepository redisRepository;
 
     private String getCurrentDateTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.now();
         return localDateTime.format(formatter);
     }

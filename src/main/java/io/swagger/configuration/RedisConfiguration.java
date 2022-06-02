@@ -22,16 +22,19 @@ public class RedisConfiguration {
     @Bean
     public JedisConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("localhost");
-        configuration.setPort(6379);
-        return new JedisConnectionFactory(configuration);
+        configuration.setHostName(REDIS_HOSTNAME);
+        configuration.setPort(REDIS_PORT);
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(configuration);
+        jedisConnectionFactory.setUsePool(true);
+        jedisConnectionFactory.getPoolConfig().setMaxTotal(50);
+        jedisConnectionFactory.getPoolConfig().setMaxIdle(50);
+        return jedisConnectionFactory;
     }
 
     @Bean
     public RedisTemplate<String, String> redisTemplate() {
         RedisTemplate<String, String> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory());
-        template.setKeySerializer(new StringRedisSerializer());
         template.setDefaultSerializer(new StringRedisSerializer());
         template.setEnableTransactionSupport(true);
         template.afterPropertiesSet();
