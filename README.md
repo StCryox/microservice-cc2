@@ -12,7 +12,9 @@ Run the following commands in the "spring-server" folder :
 ``` bash 
 docker-compose -f docker-compose-redis-only.yml up
 - ```
+
 - Then start the project
+
 ### Exemple
 - Endpoints : http://localhost:8080/v1/payments/
 - Header => idempotency-key : your-key-here
