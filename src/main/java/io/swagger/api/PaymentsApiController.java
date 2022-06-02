@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import java.util.List;
 
+import com.google.gson.Gson;
 import io.swagger.Service.MakePaymentService;
 import io.swagger.model.Payment;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,16 +35,23 @@ public class PaymentsApiController implements PaymentsApi {
     @Autowired
     private MakePaymentService makePaymentService;
 
+    @Autowired
+    private Gson gson;
+
     @org.springframework.beans.factory.annotation.Autowired
     public PaymentsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<String> makePayment(@RequestHeader("idempotency-key") String idempotencyKey, @ApiParam(value = "payment object" ,required=true )  @Valid @RequestBody List<Payment> body) {
-        String accept = request.getHeader("Accept");
-        System.out.println(idempotencyKey);
-        List<String> res = makePaymentService.makePayment(body);
-        return new ResponseEntity<String>("Idempotency Key: " + idempotencyKey + "\n" + res.toString(), HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<String> makePayment(@RequestHeader("idempotency-key") String idempotencyKey, @ApiParam(value = "payment object", required=true)  @Valid @RequestBody List<Payment> body) {
+        List<String> paymentStatus = makePaymentService.makePayment(idempotencyKey, body);
+        return new ResponseEntity<String>(gson.toJson(paymentStatus).concat("\nidempotency-key: " + idempotencyKey), HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @PostMapping("/status//{status}")
+    public ResponseEntity<Void> updateStatus(@RequestHeader("idempotency-key") String idempotencyKey, @PathVariable String status) {
+       makePaymentService.updatePaymentStatus(idempotencyKey, status);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 }
